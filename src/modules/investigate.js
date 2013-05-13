@@ -3,7 +3,7 @@ var dns = require('dns');
 var request = require('request');
 
 module.exports = function(client, config) {
-	var INVESTIGATE_REGEX = /minnie:? test ([a-z_\-[\]\\^{}|`][a-z0-9_\-[\]\\^{}|`]*)/i;;
+	var INVESTIGATE_REGEX = /minnie:? test ([a-z0-9_\-[\]\\^{}|`]*)/i;
 	var webGateway = "gateway/web/freenode/ip.";
 
 	client.addListener('message', function (from, to, message) {
@@ -26,6 +26,9 @@ module.exports = function(client, config) {
 					client.say(channel, subject + " is impervious to my probes!");
 				}else{
 					dns.lookup(host, 4, function(err, address, family) {
+						if(err) {
+							console.log(err);
+						}
 						checkMinichan(from, channel, subject, address);
 					});
 				}
@@ -43,7 +46,7 @@ module.exports = function(client, config) {
 				var result = JSON.parse(body);
 
 				if(result.names.length == 0) {
-					client.say(channel, subject + ' is unknown to the board');
+					client.say(channel, subject + ' is unknown to the board :(');
 					return;
 				}
 
