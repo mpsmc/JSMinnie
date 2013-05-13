@@ -42,17 +42,36 @@ module.exports = function(client, config) {
 			}else{
 				var result = JSON.parse(body);
 
+				if(result.names.length == 0) {
+					client.say(channel, subject + ' is unknown to the board');
+					return;
+				}
+
 				var message = subject + " is known as ";
 				var first = true;
+				var numPosts = 0;
 				for(var name in result.names) {
 					if(!first) message += ", ";
 					message += name + " (" + result.names[name] + ")";
+					numPosts += result.names[name];
 					first = false;
 				}
 
 				message += " - http://minichan.org/IP_address/" + address;
 
 				client.notice('+'+channel, message);
+
+				if(numPosts < 100) {
+					client.say(channel, subject + ' is kinda lame...');
+				}else if(numPosts < 500) {
+					client.say(channel, subject + ' is painfully average.');
+				}else if(numPosts < 1000) {
+					client.say(channel, subject + ' is a commoner.');
+				}else if(numPosts < 3000) {
+					client.say(channel, subject + ' is a prolific poster!');
+				}else{
+					client.say(channel, subject + ' is amazing!');
+				}
 			}
 		});
 	}
