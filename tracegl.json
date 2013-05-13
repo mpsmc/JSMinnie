@@ -1,0 +1,19 @@
+{
+	"theme" : "dark", // other theme: light
+	"ui":2000, // UI port
+	"tgt":2080, // browser JS port
+	"do":[], // only trace files matching
+	"no":[], // ignore files matching ":match" for string or "/match" for regexp
+	"editors" : { // editor paths per platform, modify these to set up your editor
+		"darwin":{},
+		"win32":{
+			"sublime2":{
+				"bin":"C:/Program Files (x86)/Sublime Text 2/sublime_text.exe",
+				"args":["$file:$line"]
+			}
+		},
+		"sunos":{},
+		"linux":{},
+		"freebsd":{}
+	}
+}

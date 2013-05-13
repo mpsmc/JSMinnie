@@ -1,0 +1,32 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"tab_size": 4
+	},
+	"build_systems":
+	[
+		{
+			"name": "JSMinnie Node",
+			"cmd": ["$project_path/tracegl.bat"],
+			"working_dir": "$project_path",
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"selector": "source.js",
+			"shell":true,
+			"encoding": "cp1252",
+			"windows":
+			{
+				"cmd": ["taskkill /F /IM node.exe >nul 2>nul & ", "$project_path/tracegl.bat"]
+			},
+			"linux":
+			{
+				"cmd": ["killall node>/dev/null 2>&1; sh", "$project_path/tracegl.bat"]
+			}
+		}
+	]
+}
