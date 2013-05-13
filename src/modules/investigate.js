@@ -10,11 +10,15 @@ module.exports = function(client, config) {
 		var match = INVESTIGATE_REGEX.exec(message);
 
 		if(match !== null) {
-			investigate(from, to, match[1]);
+			investigate(from, to, match[1], client.say);
 		}
 	});
 
-	function investigate(from, channel, subject) {
+	client.addListener('join', function(channel, nick, message) {
+		investigate('Minnie', channel, nick, function() {});
+	});
+
+	function investigate(from, channel, subject, output) {
 		if(client.chanData(channel).users[subject] != null) {
 			client.whois(subject, function(info) {
 				var host = info.host;
@@ -23,30 +27,31 @@ module.exports = function(client, config) {
 				}
 
 				if(S(host).contains("/")) {
-					client.say(channel, subject + " is impervious to my probes!");
+					output(channel, subject + " is impervious to my probes!");
 				}else{
 					dns.lookup(host, 4, function(err, address, family) {
 						if(err) {
 							console.log(err);
+							output(channel, "Error: " + err);
 						}
-						checkMinichan(from, channel, subject, address);
+						checkMinichan(from, channel, subject, address, output);
 					});
 				}
 			});
 		}else{
-			client.say(channel, "I cannot find " + subject + "!");
+			output(channel, "I cannot find " + subject + "!");
 		}
 	}
 
-	function checkMinichan(from, channel, subject, address) {
+	function checkMinichan(from, channel, subject, address, output) {
 		request('http://minichan.org/Minnie/ip_info.php?secret=' + config.secret + '&ip=' + address, function (error, response, body) {
 			if (error || response.statusCode != 200) {
-				client.say(channel, "Could not connect home... " + ((error != null) ? error : ""));
+				output(channel, "Could not connect home... " + ((error != null) ? error : ""));
 			}else{
 				var result = JSON.parse(body);
 
 				if(result.names.length == 0) {
-					client.say(channel, subject + ' is unknown to the board :(');
+					output(channel, subject + ' is unknown to the board :(');
 					return;
 				}
 
@@ -65,15 +70,15 @@ module.exports = function(client, config) {
 				client.notice('+'+channel, message);
 
 				if(numPosts < 100) {
-					client.say(channel, subject + ' is kinda lame...');
+					output(channel, subject + ' is kinda lame...');
 				}else if(numPosts < 500) {
-					client.say(channel, subject + ' is painfully average.');
+					output(channel, subject + ' is painfully average.');
 				}else if(numPosts < 1000) {
-					client.say(channel, subject + ' is a commoner.');
+					output(channel, subject + ' is a commoner.');
 				}else if(numPosts < 3000) {
-					client.say(channel, subject + ' is a prolific poster!');
+					output(channel, subject + ' is a prolific poster!');
 				}else{
-					client.say(channel, subject + ' is amazing!');
+					output(channel, subject + ' is amazing!');
 				}
 			}
 		});
