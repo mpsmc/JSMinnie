@@ -10,7 +10,9 @@ module.exports = function(client, config) {
 		var match = INVESTIGATE_REGEX.exec(message);
 
 		if(match !== null) {
-			investigate(from, to, match[1], client.say);
+			investigate(from, to, match[1], function(channel, message) {
+				client.say(channel, message);
+			});
 		}
 	});
 
