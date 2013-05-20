@@ -3,7 +3,7 @@ var dns = require('dns');
 var request = require('request');
 
 module.exports = function(client, config) {
-	var INVESTIGATE_REGEX = /minnie:? test ([a-z0-9_\-[\]\\^{}|`]*)/i;
+	var INVESTIGATE_REGEX = /minnie:? test ([a-z0-9_\-[\]\\^{}|`]+)/i;
 	var webGateway = "gateway/web/freenode/ip.";
 
 	client.addListener('message', function (from, to, message) {
