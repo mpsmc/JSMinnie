@@ -7,11 +7,11 @@ var config = require('./config');
 var client = new irc.Client(config.server, config.nick, config);
 
 client.addListener('error', function(message) {
-	console.error('error: ', message);
+	console.log('error: ', message);
 });
 
 client.addListener('netError', function(message) {
-	console.error('netERror: ', message);
+	console.log('netERror: ', message);
 });
 
 // Load in the modules
