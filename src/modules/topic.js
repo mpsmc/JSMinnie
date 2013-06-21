@@ -3,7 +3,16 @@ var fs = require('fs');
 module.exports = function(client, config) {
 	var topics;
 	var TOPIC_REGEX = /^!topic ?([0-9]+)?/i;
-	var webGateway = "gateway/web/freenode/ip.";
+
+	if(fs.existsSync('topics.json')) {
+		topics = JSON.parse(fs.readFileSync("topics.json"));
+
+		topics.forEach(function(topic) {
+			topic.date = new Date(topic.date);
+		});
+	}else{
+		topics = [];
+	}
 
 	client.addListener('message', function (from, to, message) {
 		if(to != "#minichan-minecraft") return;
@@ -23,16 +32,6 @@ module.exports = function(client, config) {
 			}
 		}
 	});
-
-	if(fs.existsSync('topics.json')) {
-		topics = JSON.parse(fs.readFileSync("topics.json"));
-
-		topics.forEach(function(topic) {
-			topic.date = new Date(topic.date);
-		});
-	}else{
-		topics = [];
-	}
 
 	client.addListener('topic', function (channel, topic, nick, message) {
 		if(channel != "#minichan-minecraft") return;
