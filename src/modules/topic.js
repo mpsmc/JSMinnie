@@ -19,7 +19,7 @@ module.exports = function(client, config) {
 		var match = TOPIC_REGEX.exec(message);
 
 		if(match !== null) {
-			if(match[1] != null && match[1] > 0 && match[1] < topcsi.length) {
+			if(match[1] != null && match[1] > 0 && match[1] < topics.length) {
 				var topic = topics[match[1] - 1];
 				client.say(to, "Topic " + match[1] + " by " + topic.nick + ": " + topic.topic);
 			}else{
