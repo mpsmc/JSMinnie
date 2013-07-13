@@ -51,6 +51,6 @@ module.exports = function(client, config) {
 				if(topicsTimeout != null) clearTimeout(topicsTimeout);
 				topicsTimeout = setTimeout(saveTopics, 10000);
 			}
-		}); 
+		});
 	}
 };

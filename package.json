@@ -5,6 +5,7 @@
 	"dependencies": {
 		"irc": "*",
 		"string": "*",
-		"request": "*"
+		"request": "*",
+		"ejdb": "*"
 	}
 }
