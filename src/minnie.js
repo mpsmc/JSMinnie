@@ -3,7 +3,7 @@ var fs = require('fs');
 var S = require('string');
 var EJDB = require("ejdb");
 
-var config = require('./config');
+var config = require(process.cwd() + '/config');
 
 var client = new irc.Client(config.server, config.nick, config);
 
