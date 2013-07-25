@@ -9,4 +9,4 @@ ADD . /home/jsminnie/jsminnie/
 RUN chown -R jsminnie:jsminnie /home/jsminnie/jsminnie
 RUN su -c "cd /home/jsminnie/jsminnie && npm install" jsminnie
 
-CMD ["/bin/sh", "-c", "cd /home/jsminnie/config && nodejs /home/jsminnie/jsminnie/src/server.js"]
+CMD ["/bin/sh", "-c", "cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js"]
