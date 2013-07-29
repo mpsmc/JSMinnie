@@ -1,8 +1,6 @@
 FROM r04r/nodejs
 
-RUN apt-get update
-RUN apt-get install -y build-essential zlib1g-dev
-RUN apt-get install -y python
+RUN apt-get update && apt-get install -y build-essential zlib1g-dev python && apt-get autoclean && apt-get clean
 RUN adduser jsminnie
 RUN mkdir /home/jsminnie/jsminnie
 ADD . /home/jsminnie/jsminnie/
