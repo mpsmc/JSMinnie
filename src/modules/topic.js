@@ -1,4 +1,12 @@
 var fs = require('fs');
+var diff = require('../diff');
+
+function diffTopic(o, n) {
+	var d = diff.diffString(o, n);
+	
+	
+	return d;
+}
 
 module.exports = function(client, config) {
 	var topics;
@@ -21,13 +29,15 @@ module.exports = function(client, config) {
 		if(match !== null) {
 			if(match[1] != null && match[1] > 0 && match[1] <= topics.length) {
 				var topic = topics[match[1] - 1];
-				client.say(to, "Topic " + match[1] + " by " + topic.nick + ": " + topic.topic);
+				var previous = topics[match[1] - 2] || {topic: ''};
+				client.say(to, "Topic " + match[1] + " by " + topic.nick + ": " + diffTopic(previous.topic, topic.topic));
 			}else{
-				var topic = topics[topics.length - 2];
+				var topic = topics[topics.length - 1];
 				if(topic == null) {
 					client.say(to, "No topics before current");
 				}else{
-					client.say(to, "Previous topic (" + (topics.length - 1) + ") by " + topic.nick + ": " + topic.topic);
+					var previous = topics[topics.length - 2] || {topic: ''};
+					client.say(to, "Topic (" + (topics.length) + ") by " + topic.nick + ": " + diffTopic(previous.topic, topic.topic));
 				}
 			}
 		}
