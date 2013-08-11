@@ -1,5 +1,6 @@
 var request = require('request');
 var S = require('string');
+var cheerio = require('cheerio');
 
 module.exports = function(client, config) {
 	var UD_REGEX = /!ud (.+)/i;
@@ -15,9 +16,14 @@ module.exports = function(client, config) {
 	function ud(from, to, subject) {
 		request({uri:'http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(subject)}, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
-				console.log(body);
+				var $ = cheerio.load(body);
+				var definition = $("div.definition").eq(0).text();
+				client.say(to, from + ": " + definition);
 			}else{
-				client.say(to, from + ": UD Error " + error);
+				if(!error)
+					client.say(to, from + ": " + subject + " not found on UD!");
+				else
+					client.say(to, from + ": UD Error " + (error ? error : ""));
 			}
 		})
 	}

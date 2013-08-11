@@ -72,28 +72,28 @@ module.exports.diffString = function diffString( o, n ) {
 
   if (out.n.length == 0) {
       for (var i = 0; i < out.o.length; i++) {
-        str += '\x0304' + escape(out.o[i]) + oSpace[i] + "\x0399";
+        str += '\x0304' + escape(out.o[i]) + oSpace[i] + "\x0f";
       }
   } else {
     if (out.n[0].text == null) {
       for (n = 0; n < out.o.length && out.o[n].text == null; n++) {
-        str += '\x0304' + escape(out.o[n]) + oSpace[n] + "\x0301";
+        str += '\x0304' + escape(out.o[n]) + oSpace[n] + "\x0f";
       }
     }
 
     for ( var i = 0; i < out.n.length; i++ ) {
       if (out.n[i].text == null) {
-        str += '\x0309' + escape(out.n[i]) + nSpace[i] + "\x0301";
+        str += '\x0309' + escape(out.n[i]) + nSpace[i] + "\x0f";
       } else {
         var pre = "";
 
         for (n = out.n[i].row + 1; n < out.o.length && out.o[n].text == null; n++ ) {
-          pre += '\x0304' + escape(out.o[n]) + oSpace[n] + "\x0301";
+          pre += '\x0304' + escape(out.o[n]) + oSpace[n] + "\x0f";
         }
         str += out.n[i].text + nSpace[i] + pre;
       }
     }
   }
   
-  return "\x0301" + str;
+  return "\x0f" + str;
 }

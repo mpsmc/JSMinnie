@@ -6,6 +6,8 @@
 		"irc": "*",
 		"string": "*",
 		"request": "*",
-		"ejdb": "*"
+		"ejdb": "*",
+		"simplediff": "*",
+		"cheerio": "*"
 	}
 }

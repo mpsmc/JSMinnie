@@ -1,11 +1,26 @@
 var fs = require('fs');
-var diff = require('../diff');
+var diff = require('simplediff');
 
 function diffTopic(o, n) {
-	var d = diff.diffString(o, n);
+	var diffs = diff.stringDiff(o, n);
+	var str = '\x0f';
 	
+	for(var i = 0; i < diffs.length; i++) {
+		var d = diffs[i];
+		if(d[0] == "+") {
+			str += '\x0309';
+		}else if(d[0] == "-") {
+			str += '\x0304';
+		}else{
+			str += '\x0f';
+		}
+		
+		for(var x = 0; x < d[1].length; x++) {
+			str += d[1][x] + " ";
+		}
+	}
 	
-	return d;
+	return str;
 }
 
 module.exports = function(client, config) {
