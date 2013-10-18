@@ -38,7 +38,7 @@ module.exports = function(client, config) {
 	}
 
 	client.addListener('message', function (from, to, message) {
-		if(to != "#minichan-minecraft") return;
+		if(to != "##minichan") return;
 		var match = TOPIC_REGEX.exec(message);
 
 		if(match !== null) {
@@ -59,7 +59,7 @@ module.exports = function(client, config) {
 	});
 
 	client.addListener('topic', function (channel, topic, nick, message) {
-		if(channel != "#minichan-minecraft") return;
+		if(channel != "##minichan") return;
 		if(topics.length === 0 || topic != topics[topics.length - 1].topic) {
 			topics.push({topic: topic, nick: nick, channel: channel, date: new Date()});
 			console.log(topics);

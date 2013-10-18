@@ -14,4 +14,4 @@ RUN mv /home/jsminnie/ejdb/node_modules/ /home/jsminnie/jsminnie/
 RUN chown -R jsminnie:jsminnie /home/jsminnie/jsminnie
 RUN su -c "cd /home/jsminnie/jsminnie && npm install" jsminnie
 
-CMD ["/bin/sh", "-c", "cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js"]
+CMD while ! grep -q ^up$ /sys/class/net/eth1/operstate 2>/dev/null; do sleep 1; done; cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js

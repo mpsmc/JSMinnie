@@ -23,6 +23,7 @@ module.exports = function(client, config) {
 	function investigate(from, channel, subject, output) {
 		if(client.chanData(channel).users[subject] != null) {
 			client.whois(subject, function(info) {
+				if(!info || !info.host) return;
 				var host = info.host;
 				if(S(host).startsWith(webGateway)) {
 					host = S(host).chompLeft(webGateway).s;

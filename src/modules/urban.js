@@ -3,7 +3,7 @@ var S = require('string');
 var cheerio = require('cheerio');
 
 module.exports = function(client, config) {
-	var UD_REGEX = /!ud (.+)/i;
+	var UD_REGEX = /^!ud (.+)/i;
 
 	client.addListener('message', function (from, to, message) {
 		var match = UD_REGEX.exec(message);
@@ -18,7 +18,11 @@ module.exports = function(client, config) {
 			if (!error && response.statusCode == 200) {
 				var $ = cheerio.load(body);
 				var definition = $("div.definition").eq(0).text();
+				var example = $("div.example").eq(0).text();
 				client.say(to, from + ": " + definition);
+				if(example) {
+					client.say(to, "An example is: " + example);
+				}
 			}else{
 				if(!error)
 					client.say(to, from + ": " + subject + " not found on UD!");
