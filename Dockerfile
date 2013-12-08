@@ -7,6 +7,7 @@ RUN mkdir /home/jsminnie/ejdb
 RUN chown -R jsminnie:jsminnie /home/jsminnie/
 
 RUN su -c "cd /home/jsminnie/ejdb && npm install ejdb" jsminnie
+RUN su -c "cd /home/jsminnie/ejdb && npm install irc string request simplediff cheerio" jsminnie
 
 ADD . /home/jsminnie/jsminnie/
 
@@ -15,4 +16,4 @@ RUN chown -R jsminnie:jsminnie /home/jsminnie/jsminnie
 RUN su -c "cd /home/jsminnie/jsminnie && npm install" jsminnie
 
 USER jsminnie
-CMD cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js
+CMD id && ls -hal /home/jsminnie/config && cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js
