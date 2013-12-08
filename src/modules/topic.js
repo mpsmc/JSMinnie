@@ -2,6 +2,9 @@ var fs = require('fs');
 var diff = require('simplediff');
 
 function diffTopic(o, n) {
+	if(!o) o = "";
+	if(!n) n = "";
+
 	var diffs = diff.stringDiff(o, n);
 	var str = '\x0f';
 	
@@ -24,6 +27,7 @@ function diffTopic(o, n) {
 }
 
 module.exports = function(client, config) {
+	console.log("Maybe?");
 	var topics;
 	var TOPIC_REGEX = /^!topic ?([0-9]+)?/i;
 
@@ -38,6 +42,7 @@ module.exports = function(client, config) {
 	}
 
 	client.addListener('message', function (from, to, message) {
+		console.log("what: " + to);
 		if(to != "##minichan") return;
 		var match = TOPIC_REGEX.exec(message);
 
@@ -60,6 +65,10 @@ module.exports = function(client, config) {
 
 	client.addListener('topic', function (channel, topic, nick, message) {
 		if(channel != "##minichan") return;
+		if(topics.length != 0 && nick === 'henn') {
+			client.send('topic', '##minichan', topics[topics.length - 1].topic);
+			return;
+		}
 		if(topics.length === 0 || topic != topics[topics.length - 1].topic) {
 			topics.push({topic: topic, nick: nick, channel: channel, date: new Date()});
 			console.log(topics);
