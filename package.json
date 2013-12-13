@@ -8,6 +8,7 @@
 		"request": "*",
 		"ejdb": "*",
 		"simplediff": "*",
-		"cheerio": "*"
+		"cheerio": "*",
+		"mathjs": "*"
 	}
 }
