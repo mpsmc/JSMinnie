@@ -11,8 +11,11 @@ module.exports = function(client, config, jb) {
 		var result;
 		
 		var query = match[1];
-		query = query.replace(/\bto\b/, "in");
-		query = query.replace(/\bfeet\b/, "foot");
+		query = query.replace(/\bto\b/i, "in");
+		query = query.replace(/\bfeet\b/i, "foot");
+		
+		query = query.replace(/\bf\b/i, "fahrenheit");
+		query = query.replace(/\bc\b/i, "celsius");
 		
 		
 		try {
