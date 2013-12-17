@@ -16,6 +16,7 @@ module.exports = function(client, config, jb) {
 		
 		query = query.replace(/\bf\b/i, "fahrenheit");
 		query = query.replace(/\bc\b/i, "celsius");
+		query = query.replace(/\bliter\b/i, "litre");
 		
 		
 		try {
