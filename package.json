@@ -9,6 +9,7 @@
 		"ejdb": "*",
 		"simplediff": "*",
 		"cheerio": "*",
-		"mathjs": "*"
+		"mathjs": "*",
+		"async": "*"
 	}
 }

@@ -27,7 +27,6 @@ function diffTopic(o, n) {
 }
 
 module.exports = function(client, config) {
-	console.log("Maybe?");
 	var topics;
 	var TOPIC_REGEX = /^!topic ?([0-9]+)?/i;
 
@@ -42,7 +41,6 @@ module.exports = function(client, config) {
 	}
 
 	client.addListener('message', function (from, to, message) {
-		console.log("what: " + to);
 		if(to != "##minichan") return;
 		var match = TOPIC_REGEX.exec(message);
 
