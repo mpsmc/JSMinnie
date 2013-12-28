@@ -67,7 +67,7 @@ module.exports = function(client, config, jb) {
 
 
 	client.addListener('message', function (from, to, message) {
-		// if(to != "##minichan") return;
+		if(to != "##minichan") return;
 
 		var wordsArr = message.split(" ");
 		var words = {};
