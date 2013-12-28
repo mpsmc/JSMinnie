@@ -16,7 +16,8 @@ ADD . /home/jsminnie/jsminnie/
 
 RUN mv /home/jsminnie/ejdb/node_modules/ /home/jsminnie/jsminnie/
 RUN chown -R jsminnie:jsminnie /home/jsminnie/jsminnie
-RUN su -c "cd /home/jsminnie/jsminnie && npm install" jsminnie
 
 USER jsminnie
+RUN cd /home/jsminnie/jsminnie && npm install
+
 CMD cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js

@@ -14,7 +14,7 @@ var randomParts = [
 ];
 
 module.exports = function (client, config, jb) {
-	var WORDBAN_REGEX = /^!banword (\w+)/i;
+    var WORDBAN_REGEX = /^!(?:wordban|banword) (\w+)/i;
 
 	var q = async.queue(function (task, cb) {
 		jb.findOne('words', {
