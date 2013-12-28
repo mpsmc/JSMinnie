@@ -20,7 +20,7 @@ module.exports = function(client, config, jb) {
 			
 			client.say(to, from + ": " + lastMessage);
 		}catch(e) {
-			return client.say(to, "You suck at regexp " + from + "(" + e + ")!");
+			return client.say(to, "You suck at regexp " + from + " (" + e + ")!");
 		}
 	});
 }
