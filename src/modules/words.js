@@ -73,7 +73,7 @@ module.exports = function(client, config, jb) {
 		var words = {};
 
 		for(var i = 0; i < wordsArr.length; i++) {
-			var word = wordsArr[i].trim().replace(wordtrim, "");
+			var word = wordsArr[i].toLowerCase().trim().replace(wordtrim, "");
 			if(!word)
 				continue;
 
