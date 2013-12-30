@@ -14,6 +14,7 @@ var randomParts = [
 ];
 
 module.exports = function(client, config, jb) {
+	return;
 	var q = async.queue(function(task, cb) {
 		jb.findOne('words', {word: task.word}, function(err, obj) {
 			if(err) {
