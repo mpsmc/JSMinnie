@@ -1,4 +1,5 @@
-var async = require('async')
+var async = require('async');
+var S = require('string');
 
 var wordregexp = /^\w+/;
 var wordtrim = /^[^\w]+/;
@@ -102,26 +103,44 @@ module.exports = function (client, config, jb) {
 		var wordBanMatch = WORDBAN_REGEX.exec(message);
 
 		if (wordBanMatch != null) {
-			var bannedWord = wordBanMatch[1].toLowerCase();
+			checkPrivileges(from, function() {
+				var bannedWord = wordBanMatch[1].toLowerCase();
 
-			jb.update('words', {
-				word: bannedWord,
-				'$upsert': {
+				jb.update('words', {
 					word: bannedWord,
-					banned: new Date()
-				}
-			}, function (err, obj) {
-				if (err) {
-					console.error(err);
-					client.say(to, from + ": " + err);
-					return;
-				}
-
-				client.say(to, from + ": " + bannedWord + " is now banned!");
+					'$upsert': {
+						word: bannedWord,
+						banned: new Date()
+					}
+				}, function (err, obj) {
+					if (err) {
+						console.error(err);
+						client.say(to, from + ": " + err);
+						return;
+					}
+	
+					client.say(to, from + ": " + bannedWord + " is now banned!");
+				});
 			});
 		}
 	}
-
+	
+	function checkPrivileges(who, cb) {
+		client.whois(who, function(info) {
+			if(!info || !info.channels) return;
+			for(var i = 0; i < info.channels.length; i++) {
+				var channel = S(info.channels[i]);
+				if(channel.endsWith('##minichan')) {
+					if(channel.startsWith('+') || channel.startsWith('@')) {
+						cb();
+					}else{
+						client.say('##minichan', who + ': Check your privileges.');
+					}
+				}
+			}
+		});
+	}
+	
 	client.addListener('message', function (from, to, message) {
 		if (to != "##minichan") return;
 
