@@ -70,7 +70,7 @@ module.exports = function(client, config) {
 
 	client.addListener('topic', function (channel, topic, nick, message) {
 		if(channel != "##minichan") return;
-		if(topics.length != 0 && hennNicks[nick}) {
+		if(topics.length != 0 && hennNicks[nick]) {
 			client.send('topic', '##minichan', topics[topics.length - 1].topic);
 			return;
 		}
