@@ -16,8 +16,7 @@ module.exports = function(client, config) {
 
 	function* ud(from, to, subject) {
 		try {
-			var result = yield [ client.allReturns(request), {uri:'http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(subject)} ];
-			var response = result[0], body = result[1];
+			var [response, body] = yield [ client.allReturns(request), {uri:'http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(subject)} ];
 			if(response.statusCode != 200) throw new Error('Invalid status code: ' + response.statusCode);
 
 			var $ = cheerio.load(body);
