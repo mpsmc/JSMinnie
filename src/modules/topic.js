@@ -60,10 +60,17 @@ module.exports = function(client, config) {
 			}
 		}
 	});
+	
+	var hennNicks = {
+		'henn': true,
+		'hn': true,
+		'hn2': true,
+		'becky2': true
+	};
 
 	client.addListener('topic', function (channel, topic, nick, message) {
 		if(channel != "##minichan") return;
-		if(topics.length != 0 && nick === 'henn') {
+		if(topics.length != 0 && hennNicks[nick]) {
 			client.send('topic', '##minichan', topics[topics.length - 1].topic);
 			return;
 		}
