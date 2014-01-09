@@ -59,98 +59,102 @@ module.exports = function (client, config, jb) {
 	client.addListener('message', wait.launchFiber.bind(wait, handleMessage));
 
 	function* handleMessage(from, to, message) {
-		if (to != "##minichan") return;
+		try {
+			if (to != "##minichan") return;
 
-		var wordsArr = message.split(" ");
-		var words = {};
+			var wordsArr = message.split(" ");
+			var words = {};
 
-		for (var i = 0; i < wordsArr.length; i++) {
-			var word = wordsArr[i].toLowerCase().trim().replace(wordtrim, "");
+			for (var i = 0; i < wordsArr.length; i++) {
+				var word = wordsArr[i].toLowerCase().trim().replace(wordtrim, "");
 
-			if (!word)
-				continue;
+				if (!word)
+					continue;
 
-			var match = wordregexp.exec(word);
-			if (match != null) {
-				word = match[0];
-			}
-
-			if (!word)
-				continue;
-
-			if (!words[word])
-				words[word] = 1;
-			else
-				words[word]++;
-		}
-
-		for (var key in words) {
-			var word = key;
-			var count = words[word];
-			var hitCount = 0;
-			var banned = false;
-
-			var obj = yield [ jb.findOne.bind(jb), 'words', {word: word} ];
-			// obj == null if this is the first time the word is spoken
-			// count can also not be set if the word has been banned but never spoken
-			if (obj != null && obj.count) {
-				// add the previous count to our current count
-				count += obj.count;
-			}
-
-			hitCount = 0;
-			if (obj && obj.hitCount)
-				hitCount = obj.hitCount;
-
-			if (obj != null && obj.banned) {
-				banned = obj.banned;
-
-				var secondsPassedSinceBan = ((new Date()).getTime() - obj.banned) / 1000;
-
-				if (hitCount >= 5) {
-					banned = false;
-					hitCount = 0;
-				} else {
-					hitCount++;
-					client.say('##minichan', from + ": " + "You said \"" + word + "\" which is a banned word.");
+				var match = wordregexp.exec(word);
+				if (match != null) {
+					word = match[0];
 				}
 
+				if (!word)
+					continue;
+
+				if (!words[word])
+					words[word] = 1;
+				else
+					words[word]++;
 			}
 
-			console.log(word + ": " + count + " (" + (obj ? obj.banned : '-') + ")");
+			for (var key in words) {
+				var word = key;
+				var count = words[word];
+				var hitCount = 0;
+				var banned = false;
 
-			// update or create the record in the database with the new count
-			yield [ jb.update.bind(jb), 'words', {
-				word: word,
-				'$upsert': {
+				var obj = yield [ jb.findOne.bind(jb), 'words', {word: word} ];
+				// obj == null if this is the first time the word is spoken
+				// count can also not be set if the word has been banned but never spoken
+				if (obj != null && obj.count) {
+					// add the previous count to our current count
+					count += obj.count;
+				}
+
+				hitCount = 0;
+				if (obj && obj.hitCount)
+					hitCount = obj.hitCount;
+
+				if (obj != null && obj.banned) {
+					banned = obj.banned;
+
+					var secondsPassedSinceBan = ((new Date()).getTime() - obj.banned) / 1000;
+
+					if (hitCount >= 5) {
+						banned = false;
+						hitCount = 0;
+					} else {
+						hitCount++;
+						client.say('##minichan', from + ": " + "You said \"" + word + "\" which is a banned word.");
+					}
+
+				}
+
+				console.log(word + ": " + count + " (" + (obj ? obj.banned : '-') + ")");
+
+				// update or create the record in the database with the new count
+				yield [ jb.update.bind(jb), 'words', {
 					word: word,
-					count: count,
-					hitCount: hitCount,
-					banned: banned
-				}
-			} ];
+					'$upsert': {
+						word: word,
+						count: count,
+						hitCount: hitCount,
+						banned: banned
+					}
+				} ];
 
-			if (count / 1000 % 1 === 0) {
-				sendCongrats(from, word, count);
+				if (count / 1000 % 1 === 0) {
+					sendCongrats(from, word, count);
+				}
 			}
-		}
 
-		var wordBanMatch = WORDBAN_REGEX.exec(message);
+			var wordBanMatch = WORDBAN_REGEX.exec(message);
 
-		if (wordBanMatch != null) {
-			yield [ checkPrivileges, from ];
+			if (wordBanMatch != null) {
+				yield [ checkPrivileges, from ];
 
-			var bannedWord = wordBanMatch[1].toLowerCase();
+				var bannedWord = wordBanMatch[1].toLowerCase();
 
-			var obj = yield [ jb.update.bind(jb), 'words', {
-				word: bannedWord,
-				'$upsert': {
+				var obj = yield [ jb.update.bind(jb), 'words', {
 					word: bannedWord,
-					banned: new Date()
-				}
-			}];
+					'$upsert': {
+						word: bannedWord,
+						banned: new Date()
+					}
+				}];
 
-			client.say(to, from + ": " + bannedWord + " is now banned!");
+				client.say(to, from + ": " + bannedWord + " is now banned!");
+			}
+		}catch(e) {
+			client.say(to, from + ": " + e);
 		}
 	};
 };
