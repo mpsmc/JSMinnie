@@ -10,6 +10,8 @@
 		"simplediff": "*",
 		"cheerio": "*",
 		"mathjs": "*",
-		"async": "*"
+		"async": "*",
+		"wait.for-es6": "*",
+		"traceur": "*"
 	}
 }

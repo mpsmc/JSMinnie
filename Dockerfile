@@ -10,7 +10,7 @@ ENV NODE_VERSION 0.10.24
 RUN curl http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz | tar xz --strip-components=1
 
 RUN su -c "cd /home/jsminnie/ejdb && npm install ejdb" jsminnie
-RUN su -c "cd /home/jsminnie/ejdb && npm install irc string request simplediff cheerio mathjs async" jsminnie
+RUN su -c "cd /home/jsminnie/ejdb && npm install irc string request simplediff cheerio mathjs async traceur wait.for-es6" jsminnie
 
 ADD . /home/jsminnie/jsminnie/
 
