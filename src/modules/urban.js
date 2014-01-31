@@ -20,8 +20,8 @@ module.exports = function(client, config) {
 			if(response.statusCode != 200) throw new Error('Invalid status code: ' + response.statusCode);
 
 			var $ = cheerio.load(body);
-			var definition = $("div.meaning").eq(0).text();
-			var example = $("div.example").eq(0).text();
+			var definition = $("div.meaning").eq(0).text().trim();
+			var example = $("div.example").eq(0).text().trim();
 			client.say(to, from + ": " + definition);
 			if(example) {
 				client.say(to, "An example is: " + example);
