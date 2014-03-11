@@ -62,19 +62,6 @@ Object.keys(CURRENCIES).forEach(function(key) {
 });
 
 CURRENCIES.btc = 1;
-
-function updateCurrencies(cb) {
-	request('https://blockchain.info/ticker', function(error, response, body) {
-		var resp = JSON.parse(body);
-		for(var key in resp) {
-			if(CURRENCIES[key.toLowerCase()] != null) {
-				CURRENCIES[key.toLowerCase()] = 1 / resp[key]['15m'];
-			}
-		}
-
-		cb();
-	});
-}
 	
 module.exports = function(client, config, jb) {
 	var MATH_REGEX = /^!math (.+)/i;
@@ -108,6 +95,24 @@ module.exports = function(client, config, jb) {
 			finishTask();
 		}
 	});
+
+	function updateCurrencies(cb) {
+		request('https://blockchain.info/ticker', function(error, response, body) {
+			try {
+				var resp = JSON.parse(body);
+				for(var key in resp) {
+					if(CURRENCIES[key.toLowerCase()] != null) {
+						CURRENCIES[key.toLowerCase()] = 1 / resp[key]['15m'];
+					}
+				}
+
+				cb();
+			}catch(e) {
+				client.say('##minichan', 'Error updating currencies! ' + e);
+				cb();
+			}
+		});
+	}
 	
 	function handleMessage(from, to, match) {
 		var result;
