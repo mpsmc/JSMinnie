@@ -13,6 +13,7 @@
     "async": "*",
     "wait.for-es6": "*",
     "traceur": "*",
-    "moment": "~2.5.1"
+    "moment": "~2.5.1",
+    "cleverbot-node": "~0.1.2"
   }
 }
