@@ -1,17 +1,18 @@
 {
-	"name": "JSMinnie",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-		"irc": "*",
-		"string": "*",
-		"request": "*",
-		"ejdb": "*",
-		"simplediff": "*",
-		"cheerio": "*",
-		"mathjs": "*",
-		"async": "*",
-		"wait.for-es6": "*",
-		"traceur": "*"
-	}
+  "name": "JSMinnie",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "irc": "*",
+    "string": "*",
+    "request": "*",
+    "ejdb": "*",
+    "simplediff": "*",
+    "cheerio": "*",
+    "mathjs": "*",
+    "async": "*",
+    "wait.for-es6": "*",
+    "traceur": "*",
+    "moment": "~2.5.1"
+  }
 }

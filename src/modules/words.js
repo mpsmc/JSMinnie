@@ -118,7 +118,7 @@ module.exports = function (client, config, jb) {
 
 				}
 
-				console.log(word + ": " + count + " (" + (obj ? obj.banned : '-') + ")");
+				//console.log(word + ": " + count + " (" + (obj ? obj.banned : '-') + ")");
 
 				// update or create the record in the database with the new count
 				yield [ jb.update.bind(jb), 'words', {
