@@ -18,6 +18,7 @@ RUN mv /home/jsminnie/ejdb/node_modules/ /home/jsminnie/jsminnie/
 RUN chown -R jsminnie:jsminnie /home/jsminnie/jsminnie
 
 USER jsminnie
+ENV HOME /home/jsminnie
 RUN cd /home/jsminnie/jsminnie && npm install
 
 CMD cd /home/jsminnie/config && node /home/jsminnie/jsminnie/src/minnie.js
