@@ -18,10 +18,13 @@ for(var key in PREFIXES.CURRENCY) {
 BASE_UNITS.CURRENCY = {};
 
 var CURRENCIES = {
-	'usd': {names: ['usd', 'dollar'], precision: 2},
-	'btc': {names: ['btc', 'bitcoin'], precision: 7},
-	'eur': {names: ['eur', 'euro'], precision: 2},
-	'gbp': {names: ['gbp'], precision: 2}
+	'usd':  {names: ['usd', 'dollar'], precision: 2},
+	'btc':  {names: ['btc', 'bitcoin'], precision: 8},
+	'mbtc': {names: ['mbtc'], precision: 5},
+	'ubtc': {names: ['ubtc'], precision: 2},
+	'satoshi': {names: ['satoshi'], precision: 0},
+	'eur':  {names: ['eur', 'euro'], precision: 2},
+	'gbp':  {names: ['gbp'], precision: 2}
 };
 
 Object.keys(CURRENCIES).forEach(function(key) {
@@ -62,6 +65,9 @@ Object.keys(CURRENCIES).forEach(function(key) {
 });
 
 CURRENCIES.btc = 1;
+CURRENCIES.mbtc = 0.001;
+CURRENCIES.ubtc = 0.000001;
+CURRENCIES.satoshi = 0.00000001;
 	
 module.exports = function(client, config, jb) {
 	var MATH_REGEX = /^!math (.+)/i;
