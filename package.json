@@ -14,6 +14,8 @@
     "wait.for-es6": "*",
     "traceur": "*",
     "moment": "~2.5.1",
-    "cleverbot-node": "~0.1.2"
+    "cleverbot-node": "~0.1.2",
+    "wolfram-alpha": "^0.1.1",
+    "goo.gl": "0.0.2"
   }
 }

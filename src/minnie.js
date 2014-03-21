@@ -8,6 +8,7 @@ require('traceur').require.makeDefault();
 var config = require(process.cwd() + '/config');
 
 var client = new irc.Client(config.server, config.nick, config);
+client.setMaxListeners(100);
 
 client.allReturns = function allReturns(fn) {
 	return function() {
