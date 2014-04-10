@@ -2,14 +2,17 @@ FROM dockah/base
 
 RUN apt-get update
 RUN apt-get install -y build-essential zlib1g-dev python && apt-get autoclean && apt-get clean
-RUN adduser --uid 9999 --gid 9999 jsminnie
+RUN adduser -u 9999 jsminnie
 RUN mkdir /home/jsminnie/jsminnie
 RUN mkdir /home/jsminnie/ejdb
 RUN chown -R jsminnie:jsminnie /home/jsminnie/
 
 ENV NODE_VERSION 0.10.26
 RUN curl http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz | tar xz --strip-components=1
+
 RUN su -c "ls -hal /home/jsminnie/ejdb" jsminnie
+RUN su -c "id" jsminnie
+
 RUN su -c "cd /home/jsminnie/ejdb && npm install ejdb" jsminnie
 RUN su -c "cd /home/jsminnie/ejdb && npm install irc string request simplediff cheerio async traceur wait.for-es6 wolfram-alpha goo.gl mathjs" jsminnie
 
