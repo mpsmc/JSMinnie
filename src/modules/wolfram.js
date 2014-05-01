@@ -52,7 +52,7 @@ module.exports = function(client, config, jb) {
 				var pod = rs[1].subpods[i];
 
 				var img = yield [ nodeGoogl, pod.image ];
-				res += '\n' + img.id;
+				res += '\n' + img;
 				if(pod.text) res += ' (' + pod.text.trim().replace(/^\(|\)$/g, "") + ')';
 			}
 
