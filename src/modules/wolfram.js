@@ -2,8 +2,10 @@ var googl = require('goo.gl');
 var wait = require('wait.for-es6');
 
 function nodeGoogl(longUrl, cb) {
-	googl.shorten(longUrl, function(shortUrl) {
+	googl.shorten(longUrl).then(function(shortUrl) {
 		cb(null, shortUrl);
+	}).catch(function(err) {
+		console.error(err);
 	});
 }
 
