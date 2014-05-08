@@ -1,6 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
-var url = require('url');
+var rurl = require('url');
 
 module.exports = function(client, config) {
 	var linkCache = {};
@@ -49,7 +49,7 @@ module.exports = function(client, config) {
 			url = 'http://' + url;
 		}
 
-		var parsed = url.parse(url);
+		var parsed = rurl.parse(url);
 		if(parsed.hostname == '127.0.0.1' || parsed.hostname == 'localhost') return cb(null, 'Invalid');
 
 		if(linkCache[url])
