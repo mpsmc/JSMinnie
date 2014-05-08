@@ -72,6 +72,8 @@ module.exports = function(client, config) {
 				return htmlHandler(url, cb);
 			}else if(ct.match(/^image\/gif/i)) {
 				return cb(null, 'http://gfycat.com/fetch/' + url);
+			}else{
+				return cb('Unknown content type: ' + ct);
 			}
 		});
 	}
