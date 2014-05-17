@@ -71,9 +71,21 @@ module.exports = function(client, config) {
 			if(ct.match(/^text\/html/i)) {
 				return htmlHandler(url, cb);
 			}else if(ct.match(/^image\/gif/i)) {
-				return cb(null, 'http://gfycat.com/fetch/' + url);
+				return mediacrush(url, cb);
 			}else{
 				return cb('Unknown content type: ' + ct);
+			}
+		});
+	}
+
+	function mediacrush(url, cb) {
+		request.post('https://mediacru.sh/api/upload/url', {form: {url: url}}, function(err, res, body) {
+			if(res.statusCode == 200 || res.statusCode == 409) {
+				var r = JSON.parse(body);
+				cb(null, 'https://mediacru.sh/' + r.hash + '/direct');
+			}else{
+				console.error("mediacrush statuscode " + res.statusCode + " " + body);
+				cb(null, 'http://gfycat.com/fetch/' + url);
 			}
 		});
 	}
