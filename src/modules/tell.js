@@ -1,7 +1,7 @@
 module.exports = function(client, config, jb) {
 	client.addListener('message', function (from, to, message) {
 		if(to.indexOf("#") !== 0) return;
-		var match = /^minnie.?\s+(?:(?:in|after)\s+(\d+)\s*([a-z]+))?\s*(tell|ask)\s+([^ ]+)\s(.+)/i.exec(message);
+		var match = /^minnie.?\s+(?:(?:in|after)\s+([\d.]+)\s*([a-z]+))?\s*(tell|ask)\s+([^ ]+)\s(.+)/i.exec(message);
 
 		checkForMessages(from, to);
 
