@@ -72,9 +72,9 @@ module.exports = function(client, config) {
 			}
 
 			var ct = res.headers['content-type'];
-			if(ct && ct.match(/^text\/html/i)) {
+			if(!ct || ct.match(/^text\/html/i)) {
 				return htmlHandler(url, cb);
-			}else if(ct && ct.match(/^image\/gif/i)) {
+			}else if(ct.match(/^image\/gif/i)) {
 				return mediacrush(url, cb);
 			}else{
 				return cb('Unknown content type: ' + ct);
