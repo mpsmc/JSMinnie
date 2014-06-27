@@ -22,8 +22,6 @@ module.exports = function(client, config) {
 
 	var URL_REGEX = /(?:https?:\/\/)?[\-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([\-a-zA-Z0-9@:%_+.~#?&\/\/=]*)/ig;
 	client.addListener('message', function (from, to, message) {
-		if(from.toLowerCase() == 'minnie') return;
-
 		var urls = message.match(URL_REGEX);
 		if(urls != null) {
 			var messages = [];
