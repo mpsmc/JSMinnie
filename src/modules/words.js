@@ -15,8 +15,9 @@ var randomParts = [
 	["...", "!", "!!!"]
 ];
 
-module.exports = function (client, config, jb) {
-    var WORDBAN_REGEX = /^!(?:wordban|banword) (\w+)/i;
+module.exports = function(client, config, jb) {
+	var WORDBAN_REGEX = /^!(?:wordban|banword) (\w+)/i;
+	var WORDCOUNT_REGEX = /^!wordcount (\w+)/i;
 
 	function randomPart(index) {
 		var parts = randomParts[index];
@@ -39,26 +40,26 @@ module.exports = function (client, config, jb) {
 			randomPart(6)
 		);
 	}
-	
+
 	function checkPrivileges(who, cb) {
 		client.whois(who, function(info) {
-			if(!info || !info.channels) return;
-			for(var i = 0; i < info.channels.length; i++) {
+			if (!info || !info.channels) return;
+			for (var i = 0; i < info.channels.length; i++) {
 				var channel = S(info.channels[i]);
-				if(channel.endsWith('##minichan')) {
-					if(channel.startsWith('+') || channel.startsWith('@')) {
+				if (channel.endsWith('##minichan')) {
+					if (channel.startsWith('+') || channel.startsWith('@')) {
 						cb();
-					}else{
+					} else {
 						cb('Check your privileges.');
 					}
 				}
 			}
 		});
 	}
-	
+
 	client.addListener('message', wait.launchFiber.bind(wait, handleMessage));
 
-	function* handleMessage(from, to, message) {
+	function * handleMessage(from, to, message) {
 		try {
 			if (to != "##minichan") return;
 
@@ -91,7 +92,9 @@ module.exports = function (client, config, jb) {
 				var hitCount = 0;
 				var banned = false;
 
-				var obj = yield [ jb.findOne.bind(jb), 'words', {word: word} ];
+				var obj = yield[jb.findOne.bind(jb), 'words', {
+					word: word
+				}];
 				// obj == null if this is the first time the word is spoken
 				// count can also not be set if the word has been banned but never spoken
 				if (obj != null && obj.count) {
@@ -121,7 +124,7 @@ module.exports = function (client, config, jb) {
 				//console.log(word + ": " + count + " (" + (obj ? obj.banned : '-') + ")");
 
 				// update or create the record in the database with the new count
-				yield [ jb.update.bind(jb), 'words', {
+				yield[jb.update.bind(jb), 'words', {
 					word: word,
 					'$upsert': {
 						word: word,
@@ -129,7 +132,7 @@ module.exports = function (client, config, jb) {
 						hitCount: hitCount,
 						banned: banned
 					}
-				} ];
+				}];
 
 				if (count / 1000 % 1 === 0) {
 					sendCongrats(from, word, count);
@@ -139,11 +142,11 @@ module.exports = function (client, config, jb) {
 			var wordBanMatch = WORDBAN_REGEX.exec(message);
 
 			if (wordBanMatch != null) {
-				yield [ checkPrivileges, from ];
+				yield[checkPrivileges, from];
 
 				var bannedWord = wordBanMatch[1].toLowerCase();
 
-				var obj = yield [ jb.update.bind(jb), 'words', {
+				var obj = yield[jb.update.bind(jb), 'words', {
 					word: bannedWord,
 					'$upsert': {
 						word: bannedWord,
@@ -153,7 +156,17 @@ module.exports = function (client, config, jb) {
 
 				client.say(to, from + ": " + bannedWord + " is now banned!");
 			}
-		}catch(e) {
+
+			var wordCountMatch = WORDCOUNT_REGEX.exec(message);
+			if (wordCountMatch != null) {
+				var obj = yield[jb.findOne.bind(jb), 'words', {
+					word: wordCountMatch[1].toLowerCase()
+				}];
+				if (obj != null) {
+					client.say(to, from + ": " + wordCountMatch[1] + " has been said " + obj.count + " times!");
+				}
+			}
+		} catch (e) {
 			client.say(to, from + ": " + e);
 		}
 	};
