@@ -3,7 +3,7 @@ var qs = require('querystring');
 
 module.exports = function(client, config, jb) {
 	var server = http.createServer( function(req, res) {
-		if(req.url != '/'+config.wolfram) return res.end();
+		//if(req.url != '/'+config.wolfram) return res.end();
 		if (req.method == 'POST') {
 			var body = '';
 			req.on('data', function (data) {
