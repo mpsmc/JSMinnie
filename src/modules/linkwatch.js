@@ -91,6 +91,7 @@ module.exports = function(client, config) {
 			}
 		});
 	}
+	config.doMediacrush = mediacrush;
 
 	function htmlHandler(url, cb) {
 		request(url, function(err, res, body) {
