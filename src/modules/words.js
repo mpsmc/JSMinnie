@@ -59,7 +59,7 @@ module.exports = function(client, config, jb) {
 
 	client.addListener('message', wait.launchFiber.bind(wait, handleMessage));
 
-	function * handleMessage(from, to, message) {
+	function* handleMessage(from, to, message) {
 		try {
 			if (to != "##minichan") return;
 
