@@ -18,4 +18,4 @@ RUN cd /home/jsminnie/jsminnie && npm install
 RUN chown -R jsminnie:jsminnie /home/jsminnie
 USER jsminnie
 ENV HOME /home/jsminnie
-CMD cd /home/jsminnie/config && while true do; node /home/jsminnie/jsminnie/src/minnie.js; done
+CMD cd /home/jsminnie/config && /home/jsminnie/jsminnie/src/run.sh
