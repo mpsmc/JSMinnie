@@ -15,22 +15,23 @@ module.exports = function(client, config, jb) {
 			var match = modregexp.exec(message);
 			while (match != null) {
 				var to = match[1].toLowerCase().trim();
-				if(to == from) continue;
-				var obj = yield[jb.findOne.bind(jb), 'score', {
-					who: to
-				}];
-				var score = match[2] == "++" ? 1 : -1;
-				if (obj != null && obj.score) {
-					score += obj.score;
-				}
-				
-				yield[jb.update.bind(jb), 'score', {
-					who: to,
-					'$upsert': {
-						who: to,
-						score: score
+				if(to != from) {
+					var obj = yield[jb.findOne.bind(jb), 'score', {
+						who: to
+					}];
+					var score = match[2] == "++" ? 1 : -1;
+					if (obj != null && obj.score) {
+						score += obj.score;
 					}
-				}];
+					
+					yield[jb.update.bind(jb), 'score', {
+						who: to,
+						'$upsert': {
+							who: to,
+							score: score
+						}
+					}];
+				}
 				
 				match = modregexp.exec(message);
 			}
