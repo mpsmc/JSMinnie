@@ -10,7 +10,7 @@ module.exports = function(client, config, jb) {
 
 	function* handleMessage(from, to, message) {
 		try {
-			if (to != "##minichan") return;
+			if (to != "##minichan" || from.toLowerCase() == "minnie") return;
 			var modregexp = /(\w+)(\+\+|--)/g;
 			var match = modregexp.exec(message);
 			while (match != null) {
