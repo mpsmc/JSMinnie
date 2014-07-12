@@ -61,7 +61,10 @@ module.exports = function(client, config) {
 		};
 
 		request.head(url, function(err, res, body) {
-			if(err) return cb(err);
+			if(err) {
+				console.error(err);
+				return cb();
+			}
 
 			//if(res.statusCode != 200) {
 			//	return cb(null, res.statusCode);
