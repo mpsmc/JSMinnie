@@ -76,7 +76,8 @@ module.exports = function(client, config) {
 			}else if(ct.match(/^image\/gif/i)) {
 				return mediacrush(url, cb);
 			}else{
-				return cb('Unknown content type: ' + ct);
+				console.error('Unknown content type: ' + ct);
+				return cb();
 			}
 		});
 	}
