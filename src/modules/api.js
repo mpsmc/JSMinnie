@@ -10,14 +10,30 @@ module.exports = function(client, config, jb) {
 		if(!query || query.secret != config.secret) return res.end();
 		
 		if(url.pathname == "/chat" && query.msg) {
-			var target = query.target;
-			if(!target && query.staff) target = "+##minichan";
-			if(!target) target = "##minichan";
+			var targets = [];
+			if(query.target) targets.push(query.target);
 			
-			if(query.notice)
-				client.notice(target, query.msg);
-			else
-				client.say(target, query.msg);
+			if(targets.length == 0) {
+				if(query.msg.indexOf("Topic \"") === 0) {
+					targets.push("##minichan");
+				}
+				targets.push("##minichan-log");
+				if(query.staff) {
+					for(var i = 0; i < targets.length; i++) {
+						targets[i] = "+" + targets[i];
+					}
+				}
+			}
+			
+			for(var i = 0; i < targets.length; i++) {
+				var target = targets[i];
+				
+				if(query.notice) {
+					client.notice(target, query.msg);
+				} else {
+					client.say(target, query.msg);
+				}
+			}
 			
 			res.end("OK");
 		}else{
