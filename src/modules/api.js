@@ -14,7 +14,7 @@ module.exports = function(client, config, jb) {
 			if(query.target) targets.push(query.target);
 			
 			if(targets.length == 0) {
-				if(query.msg.indexOf("Topic \"") === 0) {
+				if(query.msg.indexOf("Topic \"") === 0 || query.msg.indexOf("New report:") === 1) {
 					targets.push("##minichan");
 				}
 				targets.push("##minichan-log");

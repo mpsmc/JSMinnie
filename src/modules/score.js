@@ -16,7 +16,7 @@ module.exports = function(client, config, jb) {
 			while (match != null) {
 				console.log("! " + match[1]);
 				var to = match[1].toLowerCase().trim();
-				if(to != from) {
+				if(to.toLowerCase() != from.toLowerCase()) {
 					var obj = yield[jb.findOne.bind(jb), 'score', {
 						who: to
 					}];
