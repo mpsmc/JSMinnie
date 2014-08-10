@@ -5,7 +5,7 @@ var wait = require('wait.for-es6');
 
 module.exports = function(client, config, jb) {
 	var SCORE_REGEX = /^!score (\w+)/i;
-	var SETSCORE_REGEX = /^!setscore (\w+) (\d+)/i;
+	var SETSCORE_REGEX = /^!setscore (\w+) (-?\d+)/i;
 
 	client.addListener('message', wait.launchFiber.bind(wait, handleMessage));
 
@@ -14,7 +14,7 @@ module.exports = function(client, config, jb) {
 			if (to != "##minichan" || !from || from.toLowerCase() == "minnie") return;
 			var modregexp = /(\w+)(\+\+|--)/g;
 			var match = modregexp.exec(message);
-			while (match != null) {
+			while (match != null && raw.host != "pdpc/supporter/student/tteh") {
 				console.log("! " + match[1]);
 				var to = match[1].toLowerCase().trim();
 				if(to.toLowerCase() != from.toLowerCase()) {
