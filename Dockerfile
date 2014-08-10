@@ -9,6 +9,7 @@ RUN chown -R jsminnie:jsminnie /home/jsminnie/
 
 ENV NODE_VERSION 0.10.26
 RUN curl http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz | tar xz --strip-components=1
+RUN cd /home/jsminnie/jsminnie && npm install irc string request ejdb simplediff cheerio async goo.gl
 
 ADD package.json /home/jsminnie/jsminnie/
 RUN cd /home/jsminnie/jsminnie && npm install

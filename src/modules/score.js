@@ -5,10 +5,11 @@ var wait = require('wait.for-es6');
 
 module.exports = function(client, config, jb) {
 	var SCORE_REGEX = /^!score (\w+)/i;
+	var SETSCORE_REGEX = /^!setscore (\w+) (\d+)/i;
 
 	client.addListener('message', wait.launchFiber.bind(wait, handleMessage));
 
-	function* handleMessage(from, to, message) {
+	function* handleMessage(from, to, message, raw) {
 		try {
 			if (to != "##minichan" || !from || from.toLowerCase() == "minnie") return;
 			var modregexp = /(\w+)(\+\+|--)/g;
@@ -46,6 +47,18 @@ module.exports = function(client, config, jb) {
 				if(obj && obj.score) score = obj.score;
 				
 				client.say(to, from + ": " + match[1] + " has a score of " + score + "!");
+			}
+			match = SETSCORE_REGEX.exec(message);
+			if(match != null && raw.host == "unaffiliated/r04r") {
+				yield[jb.update.bind(jb), 'score', {
+					who: match[1],
+					'$upsert': {
+						who: match[1],
+						score: Number(match[2])
+					}
+				}];
+				
+				client.say(to, from + ": " + match[1] + " has a score of " + match[2] + "!");
 			}
 		} catch (e) {
 			client.say(to, from + ": " + e);
