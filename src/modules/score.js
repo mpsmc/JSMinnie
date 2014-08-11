@@ -14,7 +14,7 @@ module.exports = function(client, config, jb) {
 			if (to != "##minichan" || !from || from.toLowerCase() == "minnie") return;
 			var modregexp = /(\w+)(\+\+|--)/g;
 			var match = modregexp.exec(message);
-			while (match != null && raw.host != "pdpc/supporter/student/tteh") {
+			while (match != null && raw.host != "pdpc/supporter/student/tteh" && false) {
 				console.log("! " + match[1]);
 				var to = match[1].toLowerCase().trim();
 				if(to.toLowerCase() != from.toLowerCase()) {
