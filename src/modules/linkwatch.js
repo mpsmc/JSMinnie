@@ -83,13 +83,15 @@ module.exports = function(client, config) {
 	}
 
 	function mediacrush(url, cb) {
+		cb(null, 'http://gfycat.com/fetch/' + encodeURI(url));
+		return;
 		request.post('https://mediacru.sh/api/upload/url', {form: {url: url}}, function(err, res, body) {
 			if(res.statusCode == 200 || res.statusCode == 409) {
 				var r = JSON.parse(body);
 				cb(null, 'https://mediacru.sh/' + r.hash + '/direct');
 			}else{
 				console.error("mediacrush statuscode " + res.statusCode + " " + body);
-				cb(null, 'http://gfycat.com/fetch/' + url);
+				cb(null, 'http://gfycat.com/fetch/' + encodeURI(url));
 			}
 		});
 	}
