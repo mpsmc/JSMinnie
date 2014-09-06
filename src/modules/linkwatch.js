@@ -7,6 +7,7 @@ var request = require('request').defaults({
 var cheerio = require('cheerio');
 var rurl = require('url');
 var async = require('async');
+var googl = require('goo.gl');
 
 module.exports = function(client, config) {
 	var linkCache = {};
@@ -83,17 +84,24 @@ module.exports = function(client, config) {
 	}
 
 	function mediacrush(url, cb) {
-		cb(null, 'http://gfycat.com/fetch/' + encodeURI(url));
-		return;
-		request.post('https://mediacru.sh/api/upload/url', {form: {url: url}}, function(err, res, body) {
-			if(res.statusCode == 200 || res.statusCode == 409) {
-				var r = JSON.parse(body);
-				cb(null, 'https://mediacru.sh/' + r.hash + '/direct');
-			}else{
-				console.error("mediacrush statuscode " + res.statusCode + " " + body);
-				cb(null, 'http://gfycat.com/fetch/' + encodeURI(url));
-			}
-		});
+		// Get gfycat to preload
+		request.get('http://gfycat.com/fetch/' + encodeURI(url), function(err, res, body) {});
+		googl.shorten('http://gfycat.com/fetch/' + encodeURI(url))
+			.then(function(shortUrl) {
+				cb(null, shortUrl);
+			})
+			.catch(function(err) {
+				cb(err);
+			});
+		// request.post('https://mediacru.sh/api/upload/url', {form: {url: url}}, function(err, res, body) {
+			// if(res.statusCode == 200 || res.statusCode == 409) {
+				// var r = JSON.parse(body);
+				// cb(null, 'https://mediacru.sh/' + r.hash + '/direct');
+			// }else{
+				// console.error("mediacrush statuscode " + res.statusCode + " " + body);
+				// cb(null, 'http://gfycat.com/fetch/' + encodeURI(url));
+			// }
+		// });
 	}
 	config.doMediacrush = mediacrush;
 
