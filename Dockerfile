@@ -22,4 +22,5 @@ ADD runit.sh /etc/service/jsminnie/run
 RUN chmod +x /etc/service/*/run
 
 #http ping.chunk.minichan.org 8080
+#http ping.znc.minichan.org 8080
 #volume jsminnie:/home/jsminnie/config
