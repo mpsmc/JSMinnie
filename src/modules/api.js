@@ -14,15 +14,18 @@ module.exports = function(client, config, jb) {
 			if(query.target) targets.push(query.target);
 			
 			if(targets.length == 0 && query.msg.indexOf("Reply in \"I am not Scott.\"") !== 0) {
+				//fucking horrible code, needs to be changed on php side to be less retarded
 				if(query.msg.indexOf("Topic \"") === 0 || query.msg.indexOf("New report:") === 1) {
 					targets.push("##minichan");
+				}
+				if(query.msg.indexOf("New report:") === 1) {
+					client.say("#minichan-staff", query.msg);
 				}
 				targets.push("##minichan-log");
 				if(query.staff) {
 					for(var i = 0; i < targets.length; i++) {
 						targets[i] = "+" + targets[i];
 					}
-					targets.push("#minichan-staff");
 				}
 			}
 			
