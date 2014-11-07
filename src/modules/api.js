@@ -22,6 +22,7 @@ module.exports = function(client, config, jb) {
 					for(var i = 0; i < targets.length; i++) {
 						targets[i] = "+" + targets[i];
 					}
+					targets.push("#minichan-staff");
 				}
 			}
 			
