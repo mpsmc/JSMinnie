@@ -53,6 +53,7 @@ module.exports = function(client, config) {
 
 		var parsed = rurl.parse(url);
 		if(parsed.hostname == '127.0.0.1' || parsed.hostname == 'localhost') return cb(null, 'Invalid');
+		if(parsed.hostname == 'git.io') return cb(null, null);
 
 		if(linkCache[url])
 			return cb();
